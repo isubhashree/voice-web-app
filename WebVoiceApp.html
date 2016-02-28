@@ -99,7 +99,7 @@
         if((display_entity != undefined)||(display_entity != null)){
           var phoneNumber = display_entity.split(",")[0];
           var msg = display_entity.split(",")[1];
-          $.get("http://localhost:8000/sendSMS", { to_phone_number:"+919663418817", from_phone_number:"+12027803413", msg_content:"Sample Text" });
+          $.get("https://voice-web-app.herokuapp.com/sendSMS", { to_phone_number:"+919663418817", from_phone_number:"+12027803413", msg_content:"Sample Text" });
 
         }else{
           $('#note').css('visibility','visible');
