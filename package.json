@@ -2,14 +2,14 @@
   "name": "voice-web",
   "version": "1.0.0",
   "description": "'node api to integrate with twillio'",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/isubhashree/Voice-Web.git"
+    "url": "https://github.com/isubhashree/VoiceWebbApp.git"
   },
   "author": "",
   "license": "ISC",
