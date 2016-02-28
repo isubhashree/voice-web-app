@@ -1,0 +1,28 @@
+{
+  "name": "voice-web",
+  "version": "1.0.0",
+  "description": "'node api to integrate with twillio'",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isubhashree/Voice-Web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isubhashree/Voice-Web/issues"
+  },
+  "homepage": "https://github.com/isubhashree/Voice-Web#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "twilio": "^2.9.0"
+  },
+  "devDependencies": {
+    "node-dev": "^3.1.0"
+  }
+}

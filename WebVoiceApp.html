@@ -1,0 +1,181 @@
+  <html>
+  <head>
+    <link rel="stylesheet" href="microphone/microphone.min.css">
+    <script src="microphone/microphone.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  </head>
+  <body style="text-align: center;">
+    <center><div id="microphone"></div></center>
+    <div id="result"></div>
+    <div id="info"></div>
+    <div id="error"></div>
+    <div id="note"></div>
+    <center><div id="searchcontrol"></div></center>
+    <style>
+      label {
+       display: inline-block;
+       width: 80px;
+       text-align: left;     
+     }​
+     #info{
+      font-family: Helvetica;
+    }
+    body{
+      margin-top: 20px;
+    }
+  </style>
+  <script language="Javascript" type="text/javascript">
+
+   google.load('search', '1');
+
+   $(document).ready(function() {
+    $('#sms').css('visibility','hidden');
+    $('#searchcontrol').css('visibility','hidden');
+  });
+
+   var mic = new Wit.Microphone(document.getElementById("microphone"));
+
+   var info = function (msg) {
+    document.getElementById("info").innerHTML = msg;
+  };
+
+  var note = function(msg){
+    document.getElementById("note").innerHTML = msg;
+  }
+  var error = function (msg) {
+    document.getElementById("error").innerHTML = msg;
+  };
+
+  mic.onready = function () {
+    info("Microphone is ready to record");
+  };
+
+  mic.onaudiostart = function () {
+    info("Recording started");
+    error("");
+  };
+
+  mic.onaudioend = function () {
+    info("Recording stopped, processing started");
+  };
+
+  mic.onconnecting = function(){
+    info("Microphone is connecting");
+  };
+
+  mic.ondisconnected = function(){
+    info("Microphone is disconnected");
+  };
+
+  mic.onresult = function (intent, entities) {
+    var display_intent = kv("intent", intent);
+    var display_entity =  "";
+    $('#note').css('visibility','hidden');
+
+    document.getElementById("result").innerHTML = display_intent;
+    display_entity = getEnity(entities);
+
+    if(intent == "Search"){
+        $('#searchcontrol').css('visibility','visible');//document.getElementById("searchcontrol").style.visibility = "visible";
+        $('#sms').css('visibility','hidden');
+
+        console.log(display_entity);
+        if((display_entity != undefined)||(display_entity != null)){
+          doSearch(display_entity);
+        }
+        else{
+          $('#note').css('visibility','visible');
+          note("I am sorry I could not understand the search content. Kindly, repeat");
+          console.log("jh");
+        }
+      }else if(intent == "SMS"){
+
+        $('#searchcontrol').load(location.href + " #searchcontrol");
+        if((display_entity != undefined)||(display_entity != null)){
+          var phoneNumber = display_entity.split(",")[0];
+          var msg = display_entity.split(",")[1];
+          $.get("http://localhost:8000/sendSMS", { to_phone_number:"+919663418817", from_phone_number:"+12027803413", msg_content:"Sample Text" });
+
+        }else{
+          $('#note').css('visibility','visible');
+          note("I am sorry I could not understand the SMS content. Kindly, repeat");
+        }
+      }
+      else{
+        $('#searchcontrol').load(location.href + " #searchcontrol");
+         $('#sms').css('visibility','hidden');
+         $('#note').css('visibility','visible');
+        note("I can help you with search and sending SMS. Go ahead I am listening!");
+      }           
+    };
+
+    mic.onerror = function (err) {
+      error("Error: " + err);
+    };
+    mic.onconnecting = function () {
+      info("Microphone is connecting");
+    };
+    mic.ondisconnected = function () {
+      info("Microphone is not connected");
+    };
+
+    mic.connect("3TZGE7YGOC6HQ5X7KQ4NGKH6RAJ5FM6T");
+      // mic.start();
+      // mic.stop();
+
+      function kv (k, v) {
+        if (toString.call(v) !== "[object String]") {
+          v = JSON.stringify(v);
+        }
+        return k + "=" + v;
+      }
+
+      function getEnity(entities){
+        var result = "";
+        for (var e in entities) {
+          var entity = entities[e];
+          if (!(entity instanceof Array)) {
+            result += entity.value;
+          } 
+          else {
+            for (var i = 0; i < e.length; i++) {
+              result += entity[i].value + ",";
+            }
+          }
+          return result;
+        }
+      }  
+
+      function doSearch(entity){
+        //create a new search control
+        var searchControl = new google.search.SearchControl();
+
+        // Add in a full set of searchers
+        //var localSearch = new google.search.LocalSearch();
+        //searchControl.addSearcher(localSearch);
+
+        searchControl.addSearcher(new google.search.WebSearch());
+        searchControl.addSearcher(new google.search.VideoSearch());
+        searchControl.addSearcher(new google.search.BlogSearch());
+        searchControl.addSearcher(new google.search.NewsSearch());
+        searchControl.addSearcher(new google.search.ImageSearch());
+        searchControl.addSearcher(new google.search.BookSearch());
+        searchControl.addSearcher(new google.search.PatentSearch());
+
+        // Set the Local Search center point
+        //localSearch.setCenterPoint("New York, NY");
+
+        // tell the searcher to draw itself and tell it where to attach
+        searchControl.draw(document.getElementById("searchcontrol"));
+        // execute an inital search
+        searchControl.execute(entity);
+      }
+
+    </script>
+  </body>
+  </html>
