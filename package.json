@@ -1,22 +1,32 @@
 {
   "name": "voice-web-app",
   "version": "1.0.0",
-  "description": "first node app",
+  "description": "node js app using express",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/isubhashree/voice-web-app.git"
   },
   "keywords": [
-    "voiceweb"
+    "node",
+    "voice",
+    "web"
   ],
-  "author": "subhashree patra",
+  "author": "Subhashree Patra",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/isubhashree/voice-web-app/issues"
   },
-  "homepage": "https://github.com/isubhashree/voice-web-app#readme"
+  "homepage": "https://github.com/isubhashree/voice-web-app#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "node-twilio": "^0.1.2",
+    "twilio": "^2.9.0"
+  },
+  "engines": {
+    "node": "5.7.0"
+  },
 }
