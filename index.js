@@ -4,6 +4,7 @@ var accountSid = 'ACc9d9237cca179ff6be14a4347507f86e';
 var authToken = 'f91dc02a675a9f0468cfde682f53d2e3'; 
 var client = require('twilio')(accountSid, authToken);
 
+app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
@@ -40,11 +41,6 @@ app.get('/sendSMS', function (req, res) {
   });
 })
 
-var server = app.listen(8000, function () {
-
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log("Example app listening at http://%s:%s", host, port)
-
+app.listen(app.get('port'), function () {
+  console.log("Example app listening at", app.get('port'));
 })
