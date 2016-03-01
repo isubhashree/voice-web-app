@@ -17,11 +17,6 @@
     <div id="note"></div>
     <center><div id="searchcontrol"></div></center>
     <style>
-      label {
-       display: inline-block;
-       width: 80px;
-       text-align: left;     
-     }​
      #info{
       font-family: Helvetica;
     }
@@ -81,50 +76,49 @@
     display_entity = getEnity(entities);
 
     if(intent == "Search"){
-        $('#searchcontrol').css('visibility','visible');//document.getElementById("searchcontrol").style.visibility = "visible";
-        $('#sms').css('visibility','hidden');
+      $('#searchcontrol').css('visibility','visible');
+      $('#sms').css('visibility','hidden');
 
-        console.log(display_entity);
-        if((display_entity != undefined)||(display_entity != null)){
-          doSearch(display_entity);
-        }
-        else{
-          $('#note').css('visibility','visible');
-          note("I am sorry I could not understand the search content. Kindly, repeat");
-          console.log("jh");
-        }
-      }else if(intent == "SMS"){
-
-        $('#searchcontrol').load(location.href + " #searchcontrol");
-        if((display_entity != undefined)||(display_entity != null)){
-          var phoneNumber = display_entity.split(",")[0];
-          var msg = display_entity.split(",")[1];
-          $.get("https://voice-web-app.herokuapp.com/sendSMS", { to_phone_number:"+919663418817", from_phone_number:"+12027803413", msg_content:"Sample Text" });
-
-        }else{
-          $('#note').css('visibility','visible');
-          note("I am sorry I could not understand the SMS content. Kindly, repeat");
-        }
+      console.log(display_entity);
+      if((display_entity != undefined)||(display_entity != null)){
+        doSearch(display_entity);
       }
       else{
-        $('#searchcontrol').load(location.href + " #searchcontrol");
-         $('#sms').css('visibility','hidden');
-         $('#note').css('visibility','visible');
-        note("I can help you with search and sending SMS. Go ahead I am listening!");
-      }           
-    };
+        $('#note').css('visibility','visible');
+        note("I am sorry I could not understand the search content. Kindly, repeat");
+      }
+    }else if(intent == "SMS"){
 
-    mic.onerror = function (err) {
-      error("Error: " + err);
-    };
-    mic.onconnecting = function () {
-      info("Microphone is connecting");
-    };
-    mic.ondisconnected = function () {
-      info("Microphone is not connected");
-    };
+      $('#searchcontrol').load(location.href + " #searchcontrol");
+      if((display_entity != undefined)||(display_entity != null)){
+        var phoneNumber = display_entity.split(",")[0];
+        var msg = display_entity.split(",")[1];
+        $.get("https://voice-web-app.herokuapp.com/sendSMS", { to_phone_number:"+919663418817", from_phone_number:"+12027803413", msg_content:"Sample Text" });
 
-    mic.connect("3TZGE7YGOC6HQ5X7KQ4NGKH6RAJ5FM6T");
+      }else{
+        $('#note').css('visibility','visible');
+        note("I am sorry I could not understand the SMS content. Kindly, repeat");
+      }
+    }
+    else{
+      $('#searchcontrol').load(location.href + " #searchcontrol");
+      $('#sms').css('visibility','hidden');
+      $('#note').css('visibility','visible');
+      note("I can help you with search and sending SMS. Go ahead I am listening!");
+    }           
+  };
+
+  mic.onerror = function (err) {
+    error("Error: " + err);
+  };
+  mic.onconnecting = function () {
+    info("Microphone is connecting");
+  };
+  mic.ondisconnected = function () {
+    info("Microphone is not connected");
+  };
+
+  mic.connect("3TZGE7YGOC6HQ5X7KQ4NGKH6RAJ5FM6T");
       // mic.start();
       // mic.stop();
 

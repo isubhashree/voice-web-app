@@ -1,8 +1,7 @@
 var express = require('express');
 var app = express();
-var accountSid = 'ACc9d9237cca179ff6be14a4347507f86e'; 
-var authToken = 'f91dc02a675a9f0468cfde682f53d2e3'; 
-var client = require('twilio')(accountSid, authToken);
+var dotenv =require('dotenv').config({path:'myenv-var.env'}); //{silent: true}
+var client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/Public'));
